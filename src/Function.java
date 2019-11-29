@@ -4,6 +4,7 @@ import java.io.OutputStream;
 import java.math.BigInteger;
 import java.net.Socket;
 import java.security.MessageDigest;
+import java.util.HashMap;
 
 public class Function {
     public static int MAX_MSG_SIZE=Config.MaxNodes+100;
@@ -44,7 +45,7 @@ public class Function {
     public static void sendMsg(String message, OutputStream os) throws  Exception{
 //        Function.print("Msg to Send : "+message);
 
-        message = message+" ";
+        message = message+";;";
         int i = message.length();
         for(;i<MAX_MSG_SIZE;i++){
             message+="x";
@@ -75,7 +76,22 @@ public class Function {
 //        Function.print("Msg Received E: "+s);
 //        Function.print("Msg Received : "+s.split(" ")[0]);
 
-        return s.split(" ")[0];
+        return s.split(";;")[0];
+    }
+    public static void Store_Key_Value(Node receiver_node,String key,String Value,int hash_of_key){
+        Socket sock = null;
+        try {
+//            Function.print("Send key value to "+NodeToMessage(receiver_node));
+            sock = new Socket(receiver_node.getIP(),receiver_node.getPort());
+            Function.sendMsg(Config.STORE_KEY_VALUE_CODE+":"+key+":"+Value+":"+hash_of_key,sock.getOutputStream());
+            Function.recvMsg(sock.getInputStream());//ack
+            sock.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
     public static  void DisplayNode(Node MySelf){
         print("Myself");
@@ -103,6 +119,14 @@ public class Function {
 
             Function.print("key "+key+" "+MySelf.FingerTable.get(i).getIP() + " "+MySelf.FingerTable.get(i).getPort()+" "+MySelf.FingerTable.get(i).getID());
         }
+        print("\nKey Value MAP\n");
+        for (String i : MySelf.hashMap.keySet()) {
+            try {
+                System.out.println("key: " + i + " value: " + MySelf.hashMap.get(i)+" hash: "+getHash(i));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static Node findSuccesor(int id,String ip , int port) {
@@ -116,6 +140,8 @@ public class Function {
             int port_successor = Integer.parseInt(result.split(":")[1]);
             int id_successor = Integer.parseInt(result.split(":")[2]);
             successor = new Node(port_successor,ip_successor,id_successor);
+            sock.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -169,6 +195,8 @@ public class Function {
             int port_successor = Integer.parseInt(result.split(":")[1]);
             int id_successor = Integer.parseInt(result.split(":")[2]);
             successors_Predecessor = new Node(port_successor,ip_successor,id_successor);
+            sock.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -184,6 +212,8 @@ public class Function {
             Socket sock = new Socket(succesor.getIP(), succesor.getPort());
             Function.sendMsg(Config.NOTIFY_CODE+":"+node.getID()+":"+node.getIP()+":"+node.getPort(),sock.getOutputStream());
             String result = Function.recvMsg(sock.getInputStream());
+            sock.close();
+
             return;
         } catch (IOException e) {
             e.printStackTrace();

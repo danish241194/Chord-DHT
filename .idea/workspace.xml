@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="eb6cac14-9751-4524-b802-c5b537576ef5" name="Default Changelist" comment="" />
+    <list default="true" id="eb6cac14-9751-4524-b802-c5b537576ef5" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Chord/Config.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chord/Config.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Chord/Function.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chord/Function.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Chord/Main$Background.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chord/Main$Background.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Chord/Main$ListeningThread.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chord/Main$ListeningThread.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Chord/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chord/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Chord/Node.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Chord/Node.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Config.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Function.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Function.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Node.java" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,8 +28,12 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1RZyLJcZpcr9TRn46rbUTTCI2RE" />
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -77,10 +94,26 @@
       <workItem from="1570928753601" duration="597000" />
       <workItem from="1573506618535" duration="14572000" />
       <workItem from="1573924741459" duration="1640000" />
+      <workItem from="1574798167476" duration="13585000" />
+      <workItem from="1574965013196" duration="1522000" />
+      <workItem from="1574966954751" duration="2485000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

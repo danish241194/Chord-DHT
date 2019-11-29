@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.security.Key;
 import java.util.Vector;
+import java.util.HashMap; // import the HashMap class
 
 public class Node {
     private int ID;
@@ -12,6 +13,8 @@ public class Node {
     private Node predecessor;
     Vector<Node> FingerTable = new Vector();
 
+    HashMap<String, String> hashMap;
+
 
 
     Node(int port,String ip) throws Exception {
@@ -19,6 +22,7 @@ public class Node {
         this.IP = ip;
         this.ID = Function.getHash(ip+":"+port);
         InRing = false;
+        hashMap = new HashMap<String, String>();
     }
 
 
@@ -27,6 +31,8 @@ public class Node {
         this.IP = ip;
         this.ID = id;
         InRing = false;
+        hashMap = new HashMap<String, String>();
+
     }
 
     public void setPredecessor(Node node){
@@ -68,6 +74,7 @@ public class Node {
     }
 
     public String findSuccesor(int key) {
+//        Function.print("myid "+ID+" finding "+key);
         if(key > this.getID() && key <=this.succesor.getID()){
             return Function.NodeToMessage(this.succesor);
         }
@@ -87,6 +94,7 @@ public class Node {
 //        }
         else{
             Node node = closestPreceedingNode(key);
+//            Function.print("precesing : "+node.ID);
             if (node ==this)return Function.NodeToMessage(this);
 
             Node succesor = Function.findSuccesor(key,node.IP,node.PORT);
@@ -112,9 +120,9 @@ public class Node {
         }
         else {
 //            Function.print("S_p" + s_p.getID());
-            Function.print("s_p not null" +" "+s_p.getID()+" "+ this.ID+" "+this.succesor.getID());
+//            Function.print("s_p not null" +" "+s_p.getID()+" "+ this.ID+" "+this.succesor.getID());
             if ( this.ID == this.succesor.getID()||Function.belongs(s_p.getID(), this.ID, this.succesor.getID())) {
-                Function.print("Yes");
+//                Function.print("Yes");
                 this.succesor = s_p;
 //                Function.print("Successor changed : " + this.succesor.getID());
             }
@@ -124,7 +132,7 @@ public class Node {
     }
     //notify succesor about myself as predecessor
     private void notify(Node succesor, Node node) {
-        Function.print("Notifying to "+succesor.getID());
+//        Function.print("Notifying to "+succesor.getID());
         Function.sendPredecessorAsNotifier(node,succesor);
     }
 

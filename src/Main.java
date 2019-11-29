@@ -40,6 +40,23 @@ public class Main {
                     Function.print("Already in CHORD");
                 }
             }
+            else if(command.equals("put")) {
+
+                try {
+                    Function.print("Enter key");
+                    Scanner scanner1 = new Scanner(System.in);
+                    String key_ = scanner.nextLine();
+                    Function.print("Enter value");
+                    String val_ = scanner.nextLine();
+                    int key_hash = Function.getHash(key_);
+                    String res = MySelf.findSuccesor(key_hash);
+                    Node node = Function.MessageToNode(res);
+                    Function.Store_Key_Value(node,key_,val_,key_hash);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
             else if(command.equals("join")){
                 if(!MySelf.isInRing()){
                     MySelf.setPredecessor(null);
@@ -48,18 +65,37 @@ public class Main {
                     Function.print("Enter Any nodes Port Number");
                     int port = scanner1.nextInt();
                     Node succesor = Function.findSuccesor(MySelf.getID(),Ip,port);
-                    Function.sendPredecessor(MySelf,succesor);
                     MySelf.setSuccesor(succesor);
                     MySelf.setRingStatus(true);
                     MySelf.fillFingerTable();
-
 //                    MySelf.fillFingerTable();
                     ListeningThread listeningThread = new ListeningThread();
                     listeningThread.start();
+                    Function.sendPredecessor(MySelf,succesor);
+
                     Background background = new Background();
                     background.start();
+
                 }
 
+            }
+            else if(command.equals("get")){
+
+                try {
+                    Function.print("Enter key");
+                    Scanner scanner1 = new Scanner(System.in);
+                    String key_ = scanner.nextLine();
+                    int key_hash = Function.getHash(key_);
+                    String res = MySelf.findSuccesor(key_hash);
+                    Node node = Function.MessageToNode(res);
+                    Socket socket = new Socket(node.getIP(),node.getPort());
+                    Function.sendMsg(Config.GET_KEY_VALUE_CODE+":"+key_,socket.getOutputStream());
+                    String ans = Function.recvMsg(socket.getInputStream());
+                    Function.print("RESULT : "+ans);
+                    socket.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             else if(command.equals("stablize")){
                 MySelf.stablize();
@@ -78,9 +114,9 @@ public class Main {
         public void run() {
             super.run();
             while(true) {
-                Function.print("Stabilizing");
+//                Function.print("Stabilizing");
                 try {
-                    Thread.sleep(10000);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -112,6 +148,28 @@ public class Main {
                             Node node = new Node(Integer.parseInt(message.split(":")[3]),message.split(":")[2],Integer.parseInt(message.split(":")[1]));
                             MySelf.setPredecessor(node);
                             Function.sendMsg("ack",sock.getOutputStream());
+                            int len = 0;
+                            String s[] = new String[Config.MaxNodes];
+                            for (String i : MySelf.hashMap.keySet()) {
+                                try {
+                                    int key_hash = Function.getHash(i);
+                                    String key_ = i;
+                                    String val_ = MySelf.hashMap.get(key_);
+                                    if (key_hash==MySelf.getID() || Function.belongs(key_hash,node.getID(),MySelf.getID())){
+                                    }else{
+                                        Function.Store_Key_Value(node,key_,val_,key_hash);
+                                        s[len]=key_;
+                                        len++;
+                                    }
+//                                    System.out.println("key: " + i + " value: " + MySelf.hashMap.get(i)+" hash: "+getHash(i));
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            for (int i = 0 ; i< len ; i++){
+                                MySelf.hashMap.remove(s[i]);
+
+                            }
                         }
                         else if(code.equals(Config.GIVE_PREDECESSOR_CODE)){
                             String Message;
@@ -136,7 +194,25 @@ public class Main {
                             Function.sendMsg("ack",sock.getOutputStream());
 
                         }
-                        sock.close();
+                        else if(code.equals(Config.STORE_KEY_VALUE_CODE)){
+
+                            String key_ = message.split(":")[1];
+                            String value_ = message.split(":")[2];
+                            MySelf.hashMap.put(key_,value_);
+                            Function.sendMsg("ack",sock.getOutputStream());
+                        }
+                        else if(code.equals(Config.GET_KEY_VALUE_CODE)) {
+                            String key_ = message.split(":")[1];
+                            if (MySelf.hashMap.containsKey(key_)){
+                                String value = MySelf.hashMap.get(key_);
+                                Function.sendMsg(value,sock.getOutputStream());
+                            }
+                            else{
+                                Function.sendMsg("KEY_DOEST_NOT_EXIST",sock.getOutputStream());
+
+                            }
+                        }
+                            sock.close();
                     }
                     servsock.close();
                 } catch (IOException e) {
